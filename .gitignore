@@ -1,0 +1,8 @@
+videos_destacados/
+*.mp4
+*.mkv
+*.avi
+*.mov
+venv/
+__pycache__/
+*.sqlite3

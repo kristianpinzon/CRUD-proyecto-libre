@@ -1,0 +1,29 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Eliminar Arma | Dark Souls 3</title>
+    <link rel="stylesheet" href="{% static 'armas/css/styles.css' %}?v=1.1">
+    <link rel="stylesheet" href="{% static 'armas/css/eliminar.css' %}">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;900&family=Inter:wght@300;400;500;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="page-wrapper">
+        <main class="main-container">
+            <div class="delete-container">
+                <h2>✦ Eliminar Arma ✦</h2>
+                <p>¿Estás seguro de que deseas eliminar permanentemente la reliquia <strong>"{{ arma.nombre }}"</strong>?</p>
+                
+                <form method="post">
+                    {% csrf_token %}
+                    <div class="delete-actions">
+                        <button type="submit" class="btn-confirmar-eliminar">Sí, Eliminar Arma</button>
+                        <a href="{% url 'index' %}" class="btn-cancelar">Cancelar</a>
+                    </div>
+                </form>
+            </div>
+        </main>
+    </div>
+</body>
+</html>

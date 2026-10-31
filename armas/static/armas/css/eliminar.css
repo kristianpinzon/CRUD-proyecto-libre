@@ -1,0 +1,72 @@
+/* ==========================================
+   ESTILOS CONFIRMACIÓN DE ELIMINACIÓN
+   ========================================== */
+
+.delete-container {
+    max-width: 600px;
+    margin: 80px auto;
+    padding: 40px;
+    background: rgba(13, 12, 18, 0.95);
+    border: 1px solid #8b0000;
+    border-top: 4px solid #ff4d4d;
+    border-radius: 16px;
+    text-align: center;
+    box-shadow: 0 0 30px rgba(139, 0, 0, 0.4);
+}
+
+.delete-container h2 {
+    font-family: 'Cinzel', serif;
+    color: #ff6b6b;
+    font-size: 1.8rem;
+    margin-bottom: 20px;
+}
+
+.delete-container p {
+    color: var(--text-muted, #8c909c);
+    font-size: 1.1rem;
+    margin-bottom: 30px;
+    line-height: 1.6;
+}
+
+.delete-container strong {
+    color: var(--gold-light, #fbe8a6);
+}
+
+.delete-actions {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+}
+
+.btn-confirmar-eliminar {
+    background: linear-gradient(135deg, #a82e2e 0%, #701c1c 100%);
+    color: #fff;
+    border: 1px solid #ff4d4d;
+    padding: 12px 24px;
+    font-family: 'Cinzel', serif;
+    font-weight: bold;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.btn-confirmar-eliminar:hover {
+    background: #c0392b;
+    box-shadow: 0 0 15px rgba(255, 77, 77, 0.5);
+}
+
+.btn-cancelar {
+    background: rgba(255, 255, 255, 0.05);
+    color: var(--text-muted, #8c909c);
+    border: 1px solid var(--border-color, #262235);
+    padding: 12px 24px;
+    font-family: 'Cinzel', serif;
+    border-radius: 8px;
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+.btn-cancelar:hover {
+    border-color: var(--gold, #d4af37);
+    color: var(--gold, #d4af37);
+}

@@ -1,0 +1,277 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Arsenal de Lothric | Dark Souls 3</title>
+    <!-- Se agrega ?v=1.1 para romper la caché del CSS en el navegador -->
+    <link rel="stylesheet" href="{% static 'armas/css/styles.css' %}?v=1.1">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;900&family=Inter:wght@300;400;500;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <div class="page-wrapper">
+
+        <!-- TOP HEADER -->
+        <header class="top-header">
+            <div class="header-line"></div>
+            <span class="header-subtitle">"Enciende la hoguera y descubre el poder oculto de cada arma."</span>
+            <div class="header-line"></div>
+        </header>
+
+        <main class="main-container">
+            
+            <!-- SECCIÓN PRINCIPAL CON BOTÓN DESTACADO -->
+            <section class="inicio-dashboard-enorme">
+                <div class="epic-glow-bg"></div>
+                
+                <div class="intro-col">
+                    <div class="badge-rpg"><span>Guía de armas</span></div>
+                    <h2>Guía de armas de Dark Souls 3</h2>
+                    <p>
+                        Las cenizas se alzan una vez más. Adéntrate en el profundo y mortífero arsenal del reino de Lothric. 
+                        Consulta los escalados de atributos, el daño elemental y examina las técnicas de combate cuerpo a cuerpo 
+                        para forjar tu camino hacia la Primera Llama.
+                    </p>
+                    
+                    <div class="dashboard-stats-info">
+                        <div class="d-stat">
+                            <strong>{{ armas|length }}</strong>
+                            <span>Armas Registradas</span>
+                        </div>
+                        <div class="d-stat">
+                            <strong>{{ categorias|length }}</strong>
+                            <span>Categorías</span>
+                        </div>
+                        <div class="d-stat">
+                            <strong>DS3</strong>
+                            <span>Versión 1.15</span>
+                        </div>
+                    </div>
+
+                    <!-- BOTÓN AÑADIR ARMA -->
+                    <div class="btn-add-container">
+                        <a href="{% url 'añadir_arma' %}" class="btn-add-arma">
+                            + Añadir Nueva Arma
+                        </a>
+                    </div>
+                </div>
+
+                {% if videos_banner %}
+                <div class="carousel-col">
+                    <div class="carousel-container">
+                        <div class="carousel-track" id="carouselTrack">
+                            {% for video in videos_banner %}
+                                <div class="carousel-slide {% if forloop.first %}active{% endif %}">
+                                    <video autoplay muted loop playsinline>
+                                        <source src="{{ video.archivo_video.url }}" type="video/mp4">
+                                        Tu navegador no soporta vídeo.
+                                    </video>
+                                    <div class="slide-caption-translucido">
+                                        <span>{{ video.titulo }}</span>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                        <button class="carousel-btn prev" onclick="moveSlide(-1)">&#10094;</button>
+                        <button class="carousel-btn next" onclick="moveSlide(1)">&#10095;</button>
+                    </div>
+                </div>
+                {% endif %}
+            </section>
+
+            <!-- FILTROS -->
+            <div class="filtros-wrapper">
+                <span class="filter-label">Filtrar Armas:</span>
+                <div class="filtros-container">
+                    <a href="{% url 'index' %}" class="btn-filtro {% if not categoria_seleccionada %}activo{% endif %}">
+                        <i>Todas</i>
+                    </a>
+                    {% for cat in categorias %}
+                        <a href="?categoria={{ cat.id }}" class="btn-filtro {% if categoria_seleccionada == cat.id|stringformat:'s' %}activo{% endif %}">
+                            {{ cat.nombre }}
+                        </a>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <div class="section-divider">
+                <span>✦ Inventario Detallado de Armamento ✦</span>
+            </div>
+
+            <!-- GRID DE TARJETAS DE ARMAS -->
+            <div class="grid-armas">
+                {% for arma in armas %}
+                    <div class="card-arma">
+                        {% if arma.es_arma_de_jefe %}
+                            <div class="badge-jefe">Arma de Jefe</div>
+                        {% endif %}
+
+                        <div class="card-content-top">
+                            <div class="card-header">
+                                <span class="categoria-tag">{{ arma.categoria.nombre }}</span>
+                                <h2>{{ arma.nombre }}</h2>
+                            </div>
+                            
+                            {% if arma.imagen %}
+                                <div class="img-container">
+                                    <img src="{{ arma.imagen.url }}" alt="{{ arma.nombre }}">
+                                </div>
+                            {% endif %}
+
+                            <p class="descripcion">{{ arma.descripcion }}</p>
+                        </div>
+                        
+                        <div class="card-content-bottom">
+                            
+                            <!-- REQUISITOS Y ESCALADOS -->
+                            <div class="stats-box">
+                                <div class="stats-grid-header"><span>Requisitos y Escalados</span></div>
+                                <div class="atributos-grid">
+                                    <div class="atrib-item">
+                                        <span class="atrib-name">FUE</span>
+                                        <span class="atrib-val">{{ arma.req_fuerza }} <small>({{ arma.escalado_fuerza }})</small></span>
+                                    </div>
+                                    <div class="atrib-item">
+                                        <span class="atrib-name">DES</span>
+                                        <span class="atrib-val">{{ arma.req_destreza }} <small>({{ arma.escalado_destreza }})</small></span>
+                                    </div>
+                                    <div class="atrib-item">
+                                        <span class="atrib-name">INT</span>
+                                        <span class="atrib-val">{{ arma.req_inteligencia }} <small>({{ arma.escalado_inteligencia }})</small></span>
+                                    </div>
+                                    <div class="atrib-item">
+                                        <span class="atrib-name">FE</span>
+                                        <span class="atrib-val">{{ arma.req_fe }} <small>({{ arma.escalado_fe }})</small></span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- POTENCIA DE ATAQUE Y ATRIBUTOS -->
+                            <div class="stats-box">
+                                <div class="stats-grid-header"><span>Potencia de Ataque y Atributos</span></div>
+                                <div class="stats-grid">
+                                    <div class="stat-cell">
+                                        <span class="s-label">Peso</span>
+                                        <span class="s-val">{{ arma.peso }} kg</span>
+                                    </div>
+                                    <div class="stat-cell">
+                                        <span class="s-label">Durabilidad</span>
+                                        <span class="s-val">{{ arma.durabilidad }}</span>
+                                    </div>
+                                    <div class="stat-cell full highlight">
+                                        <span class="s-label">Daño Físico Base</span>
+                                        <span class="s-val">{{ arma.daño_fisico }}</span>
+                                    </div>
+
+                                    {% if arma.daño_magico > 0 %}
+                                        <div class="stat-cell full daño-magico">
+                                            <span class="s-label">Daño Mágico</span>
+                                            <span class="s-val">+{{ arma.daño_magico }}</span>
+                                        </div>
+                                    {% endif %}
+                                    {% if arma.daño_fuego > 0 %}
+                                        <div class="stat-cell full daño-fuego">
+                                            <span class="s-label">Daño Fuego</span>
+                                            <span class="s-val">+{{ arma.daño_fuego }}</span>
+                                        </div>
+                                    {% endif %}
+                                    {% if arma.daño_rayo > 0 %}
+                                        <div class="stat-cell full daño-rayo">
+                                            <span class="s-label">Daño Rayo</span>
+                                            <span class="s-val">+{{ arma.daño_rayo }}</span>
+                                        </div>
+                                    {% endif %}
+                                    {% if arma.daño_oscuro > 0 %}
+                                        <div class="stat-cell full daño-oscuro">
+                                            <span class="s-label">Daño Oscuro</span>
+                                            <span class="s-val">+{{ arma.daño_oscuro }}</span>
+                                        </div>
+                                    {% endif %}
+
+                                    <div class="stat-cell full">
+                                        <span class="s-label">Valor en Almas</span>
+                                        <span class="s-val">{{ arma.valor_almas }}</span>
+                                    </div>
+
+                                    {% if arma.efecto_pasivo %}
+                                        <div class="stat-cell full efecto">
+                                            <span class="s-label">Efecto Especial</span>
+                                            <span class="s-val">{{ arma.efecto_pasivo }}</span>
+                                        </div>
+                                    {% endif %}
+                                </div>
+                            </div>
+
+                            <!-- VÍDEOS DE ARTES DE COMBATE -->
+                            {% if arma.video_habilidad_1 or arma.video_habilidad_2 %}
+                                <div class="weapon-videos">
+                                    <h4> Demostración de Arte de Combate</h4>
+                                    <div class="videos-flex {% if not arma.video_habilidad_1 or not arma.video_habilidad_2 %}single-video{% endif %}">
+                                        {% if arma.video_habilidad_1 %}
+                                            <div class="video-wrapper">
+                                                <video controls preload="metadata">
+                                                    <source src="{{ arma.video_habilidad_1.url }}" type="video/mp4">
+                                                </video>
+                                            </div>
+                                        {% endif %}
+                                        {% if arma.video_habilidad_2 %}
+                                            <div class="video-wrapper">
+                                                <video controls preload="metadata">
+                                                    <source src="{{ arma.video_habilidad_2.url }}" type="video/mp4">
+                                                </video>
+                                            </div>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            {% endif %}
+
+                            <!-- BOTONES DE ACCIÓN: EDITAR Y ELIMINAR -->
+                            <div class="card-acciones">
+                                <a href="{% url 'editar_arma' arma.pk %}" class="btn-editar">
+                                    Editar
+                                </a>
+                                <a href="{% url 'eliminar_arma' arma.pk %}" class="btn-eliminar">
+                                    Eliminar
+                                </a>
+                            </div>
+
+                        </div>
+                    </div>
+                {% empty %}
+                    <div class="no-armas">
+                        <p>No se encontraron reliquias registradas en esta categoría.</p>
+                    </div>
+                {% endfor %}
+            </div>
+        </main>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            let currentSlide = 0;
+            const slides = document.querySelectorAll('.carousel-slide');
+
+            function showSlide(index) {
+                if (slides.length === 0) return;
+                slides.forEach(slide => slide.classList.remove('active'));
+                if (index >= slides.length) currentSlide = 0;
+                if (index < 0) currentSlide = slides.length - 1;
+                slides[currentSlide].classList.add('active');
+            }
+
+            window.moveSlide = function(direction) {
+                currentSlide += direction;
+                showSlide(currentSlide);
+            }
+
+            if (slides.length > 1) {
+                setInterval(() => {
+                    currentSlide++;
+                    showSlide(currentSlide);
+                }, 5000);
+            }
+        });
+    </script>
+</body>
+</html>

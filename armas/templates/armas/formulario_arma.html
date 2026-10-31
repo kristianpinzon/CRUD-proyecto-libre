@@ -1,0 +1,33 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ titulo_pagina }} | Dark Souls 3</title>
+    <!-- Estilos generales y del formulario -->
+    <link rel="stylesheet" href="{% static 'armas/css/styles.css' %}">
+    <link rel="stylesheet" href="{% static 'armas/css/formulario.css' %}">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;900&family=Inter:wght@300;400;500;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <div class="page-wrapper">
+        <main class="main-container">
+            <div class="form-container">
+                <h2>{{ titulo_pagina }}</h2>
+
+                <!-- enctype="multipart/form-data" para imágenes y vídeos -->
+                <form method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    
+                    {{ form.as_p }}
+
+                    <button type="submit" class="btn-submit">Guardar Arma en el Arsenal</button>
+                    <a href="{% url 'index' %}" class="btn-cancel">Volver al Inicio</a>
+                </form>
+            </div>
+        </main>
+    </div>
+
+</body>
+</html>
